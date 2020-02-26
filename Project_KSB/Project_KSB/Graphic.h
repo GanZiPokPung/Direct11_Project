@@ -1,5 +1,6 @@
 #pragma once
 
+class Direct3D;
 class Graphic
 {
 public:
@@ -13,5 +14,8 @@ public:
 
 private:
 	bool Render();
+
+private:
+	Direct3D* m_Direct3D = nullptr;
 };
 

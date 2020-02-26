@@ -151,7 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AlignedAllocationPolicy.h" />
     <ClInclude Include="Const.h" />
+    <ClInclude Include="Direct3D.h" />
     <ClInclude Include="DxDefine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Global.h" />
@@ -165,6 +167,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Direct3D.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="pch.cpp">

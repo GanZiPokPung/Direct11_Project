@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 	System *system = new System;
 	
-	if (true == system->Initialize())
+	if (system->Initialize())
 		system->Run();
 
 	SAFE_SHUTDOWN(system);

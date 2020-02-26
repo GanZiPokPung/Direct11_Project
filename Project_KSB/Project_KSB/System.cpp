@@ -41,7 +41,7 @@ void System::Shutdown()
 void System::Run()
 {
 	MSG msg;
-	ZeroMemory(&msg, sizeof(MSG));
+	Z_Memory(msg);
 
 	while (true)
 	{
@@ -55,7 +55,7 @@ void System::Run()
 		}
 		else
 		{
-			if (false == Frame())
+			if (!Frame())
 				break;
 		}
 	}
@@ -82,7 +82,7 @@ LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lpara
 
 bool System::Frame()
 {
-	if (true == m_Input->IsKeyDown(VK_ESCAPE))
+	if (m_Input->IsKeyDown(VK_ESCAPE))
 		return false;
 
 	return m_Graphic->Frame();
@@ -116,13 +116,16 @@ void System::InitializeWindows(int& width, int& height)
 	RegisterClassEx(&wc);
 
 	// 해상도
-	width = GetSystemMetrics(SM_CXSCREEN);
-	height = GetSystemMetrics(SM_CYSCREEN);
+	/*width = GetSystemMetrics(SM_CXSCREEN);
+	height = GetSystemMetrics(SM_CYSCREEN);*/
+
+	width = WINDOW_WIDTH;
+	height = WINDOW_HEIGHT;
 
 	int posX = 0;
 	int posY = 0;
 
-	if (TRUE == FULL_SCREEN)
+	if (FULL_SCREEN)
 	{
 		// 풀스크린 모드로 지정했다면 화면 해상도를 데스크톱 해상도로 지정하고 
 		// 색상을 32bit로 지정
@@ -138,9 +141,6 @@ void System::InitializeWindows(int& width, int& height)
 	}
 	else
 	{
-		width = 800;
-		height = 600;
-
 		posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	}
@@ -157,7 +157,7 @@ void System::InitializeWindows(int& width, int& height)
 
 void System::ShutdownWindows()
 {
-	if (true == FULL_SCREEN)
+	if (FULL_SCREEN)
 	{
 		// 풀스크린 모드 디스플레이 설정 초기화
 		ChangeDisplaySettings(NULL, 0);

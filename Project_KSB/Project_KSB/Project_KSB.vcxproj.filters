@@ -31,6 +31,9 @@
     <Filter Include="00.Core\Graphic">
       <UniqueIdentifier>{66b309d6-88d9-447f-9972-020f1846b51e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Core\Graphic\Direct3D">
+      <UniqueIdentifier>{2b629960-f180-4fd1-b1e2-1bcee2bd1e3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -69,6 +72,12 @@
     <ClInclude Include="Macro.h">
       <Filter>98.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="AlignedAllocationPolicy.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Direct3D.h">
+      <Filter>00.Core\Graphic\Direct3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -85,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="Graphic.cpp">
       <Filter>00.Core\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct3D.cpp">
+      <Filter>00.Core\Graphic\Direct3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,9 +10,14 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "framework.h"
 
-#include "DxDefine.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
+
 #include "Global.h"
 #include "Const.h"
 #include "Macro.h"
+
+#include "DxDefine.h"
 
 #endif //PCH_H
