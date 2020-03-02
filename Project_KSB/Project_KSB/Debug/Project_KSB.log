@@ -1,4 +1,5 @@
 ﻿  pch.cpp
+  ColorShader.cpp
   Direct3D.cpp
   Graphic.cpp
   Input.cpp
