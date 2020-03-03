@@ -16,7 +16,7 @@ ColorShader::~ColorShader()
 bool ColorShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	return InitializeShader(device, hwnd,
-		L"../Project_KSB/color.vs", L"../Project_KSB/color.ps");
+		L"../Project_KSB/Color.vs", L"../Project_KSB/Color.ps");
 }
 
 void ColorShader::Shutdown()
@@ -52,7 +52,7 @@ bool ColorShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsPat
 	}
 	
 	ID3D10Blob* pixelShaderBuffer = nullptr;
-	if (FAILED(D3DCompileFromFile(psPath, NULL, NULL, "PixelVertexShader", "ps_5_0",
+	if (FAILED(D3DCompileFromFile(psPath, NULL, NULL, "ColorPixelShader", "ps_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage)))
 	{
 		if (nullptr != errorMessage)

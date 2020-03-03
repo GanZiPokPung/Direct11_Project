@@ -1,5 +1,5 @@
 #pragma once
-class Direct3D
+class Direct3D : public AlignedAllocationPolicy<16>
 {
 public:
 	Direct3D();

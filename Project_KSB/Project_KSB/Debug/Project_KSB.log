@@ -1,9 +1,2 @@
-﻿  pch.cpp
-  ColorShader.cpp
-  Direct3D.cpp
-  Graphic.cpp
-  Input.cpp
-  Project_KSB.cpp
-  System.cpp
-  코드를 생성하고 있습니다...
+﻿  Graphic.cpp
   Project_KSB.vcxproj -> C:\Users\Bum\Desktop\GitHub\Direct11_Project\Project_KSB\Debug\Project_KSB.exe

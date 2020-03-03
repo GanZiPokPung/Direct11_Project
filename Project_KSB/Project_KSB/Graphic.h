@@ -1,6 +1,9 @@
 #pragma once
 
 class Direct3D;
+class Camera;
+class Model;
+class ColorShader;
 class Graphic
 {
 public:
@@ -17,5 +20,8 @@ private:
 
 private:
 	Direct3D* m_Direct3D = nullptr;
+	Camera* m_Camera = nullptr;
+	Model* m_Model = nullptr;
+	ColorShader* m_ColorShader = nullptr;
 };
 
