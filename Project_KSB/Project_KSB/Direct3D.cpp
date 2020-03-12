@@ -57,6 +57,7 @@ bool Direct3D::Initialize(int width, int height, bool vsync, HWND hwnd, bool ful
 {
 	m_vsyncCheck = vsync;
 
+	// 어뎁터 정보, 해상도 정보 등
 	IDXGIFactory* factory = nullptr;
 	if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)& factory)))
 	{

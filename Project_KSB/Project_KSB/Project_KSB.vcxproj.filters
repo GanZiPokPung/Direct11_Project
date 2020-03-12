@@ -46,6 +46,12 @@
     <Filter Include="00.Core\Graphic\Camera">
       <UniqueIdentifier>{d856c7c5-0909-4ba2-bf25-0f7ad44834d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Core\Graphic\Shader\Texture">
+      <UniqueIdentifier>{15f29642-57b2-44b6-9916-da4d8caba743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\Graphic\Texture">
+      <UniqueIdentifier>{54eb658c-1af7-4a81-a8cb-8708cf62353a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -99,6 +105,15 @@
     <ClInclude Include="Camera.h">
       <Filter>00.Core\Graphic\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>00.Core\Graphic\Shader\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>00.Core\Graphic\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelTexture.h">
+      <Filter>00.Core\Graphic\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -128,6 +143,15 @@
     <ClCompile Include="Camera.cpp">
       <Filter>00.Core\Graphic\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>00.Core\Graphic\Shader\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>00.Core\Graphic\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelTexture.cpp">
+      <Filter>00.Core\Graphic\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project_KSB.rc">
@@ -148,6 +172,12 @@
     </FxCompile>
     <FxCompile Include="Color.vs">
       <Filter>00.Core\Graphic\Shader\Color</Filter>
+    </FxCompile>
+    <FxCompile Include="Texture.vs">
+      <Filter>00.Core\Graphic\Shader\Texture</Filter>
+    </FxCompile>
+    <FxCompile Include="Texture.ps">
+      <Filter>00.Core\Graphic\Shader\Texture</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

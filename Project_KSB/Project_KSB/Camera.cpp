@@ -31,6 +31,8 @@ void Camera::SetRotation(float x, float y, float z)
 
 void Camera::Render()
 {
+	// 카메라의 좌표와 회전을 이용하여 view, proj 행렬을 계산한다.
+
 	XMFLOAT3 up, pos, lookAt;
 	XMVECTOR vUp, vPos, vLookAt;
 	float yaw, pitch, roll;
@@ -55,12 +57,15 @@ void Camera::Render()
 	yaw = XMConvertToRadians(m_rot.y);
 	roll = XMConvertToRadians(m_rot.z);
 
+	// yaw pitch roll을 이용하여 회전행렬을 구함
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
+	// look벡터, up벡터
 	vLookAt = XMVector3TransformCoord(vLookAt, rotationMatrix);
 	vUp = XMVector3TransformCoord(vUp, rotationMatrix);
 
-	vLookAt = XMVectorAdd(vPos, vLookAt);
+	//vLookAt = XMVectorAdd(vPos, vLookAt);
 
+	// 구한 벡터들을 사용하여 view 행렬 구함
 	m_view = XMMatrixLookAtLH(vPos, vLookAt, vUp);
 }
