@@ -23,6 +23,7 @@ public:
 public:
 	bool Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext,
 		char* filePath);
+	bool Initialize(ID3D11Device* device, WCHAR* filePath);
 	void Shutdown();
 
 private:

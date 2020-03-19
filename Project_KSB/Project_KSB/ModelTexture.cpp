@@ -46,24 +46,36 @@ ID3D11ShaderResourceView* ModelTexture::GetTexture()
 
 bool ModelTexture::InitializeBuffers(ID3D11Device* device)
 {
-	m_vertexCount = 3;
-	m_indexCount = 3;
+	m_vertexCount = 6;
+	m_indexCount = 6;
 
 	VertexType* vertices = new VertexType[m_vertexCount];
 	ULONG* indices = new ULONG[m_indexCount];
 
-	vertices[0].pos = XMFLOAT3(-1.f, -1.f, 0.f);
-	vertices[0].tex = XMFLOAT2(0.f, 1.f);
+	vertices[0].pos = XMFLOAT3(-1.f, 1.f, 0.f);
+	vertices[0].tex = XMFLOAT2(0.f, 0.f);
 
-	vertices[1].pos = XMFLOAT3(0.f, 1.f, 0.f);
-	vertices[1].tex = XMFLOAT2(0.5f, 0.f);
+	vertices[1].pos = XMFLOAT3(1.f, 1.f, 0.f);
+	vertices[1].tex = XMFLOAT2(1.f, 0.f);
 
-	vertices[2].pos = XMFLOAT3(1.f, -1.f, 0.f);
-	vertices[2].tex = XMFLOAT2(1.f, 1.f);
+	vertices[2].pos = XMFLOAT3(-1.f, -1.f, 0.f);
+	vertices[2].tex = XMFLOAT2(0.f, 1.f);
+
+	vertices[3].pos = XMFLOAT3(1.f, 1.f, 0.f);
+	vertices[3].tex = XMFLOAT2(1.f, 0.f);
+
+	vertices[4].pos = XMFLOAT3(1.f, -1.f, 0.f);
+	vertices[4].tex = XMFLOAT2(1.f, 1.f);
+
+	vertices[5].pos = XMFLOAT3(-1.f, -1.f, 0.f);
+	vertices[5].tex = XMFLOAT2(0.f, 1.f);
 
 	indices[0] = 0;
 	indices[1] = 1;
 	indices[2] = 2;
+	indices[3] = 3;
+	indices[4] = 4;
+	indices[5] = 5;
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;

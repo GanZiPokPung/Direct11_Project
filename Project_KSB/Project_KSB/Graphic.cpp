@@ -6,6 +6,10 @@
 #include "ColorShader.h"
 #include "ModelTexture.h"
 #include "TextureShader.h"
+#include "Light.h"
+#include "LightShader.h"
+#include "ModelLight.h"
+#include "Input.h"
 
 Graphic::Graphic()
 {
@@ -60,6 +64,24 @@ bool Graphic::Initialize(int width, int height, HWND hwnd)
 	}
 #endif
 
+#ifdef LIGHT_MODE
+	m_LightShader = new LightShader;
+	if (!m_LightShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MSG_ERROR(hwnd, L"Could not initialize shader! : Light");
+		return false;
+	}
+	m_ModelLight = new ModelLight;
+	if (!m_ModelLight->Initialize(m_Direct3D->GetDevice(), L"../Project_KSB/data/seafloor.dds"))
+	{
+		MSG_ERROR(hwnd, L"Could not initialize the model object.");
+		return false;
+	}
+	m_Light = new Light;
+	m_Light->SetDiffuseColor(1.f, 1.f, 1.f, 1.f);
+	m_Light->SetDirection(1.f, 0.f, 1.f);
+#endif
+
 	m_Camera = new Camera;
 	m_Camera->SetPosition(0.f, 0.f, -5.f);
 
@@ -77,15 +99,45 @@ void Graphic::Shutdown()
 	SAFE_SHUTDOWN(m_TextureShader);
 	SAFE_SHUTDOWN(m_ModelTexture);
 #endif
+#ifdef LIGHT_MODE
+	SAFE_SHUTDOWN(m_LightShader);
+	SAFE_SHUTDOWN(m_ModelLight);
+	SAFE_DELETE(m_Light);
+#endif
 	SAFE_DELETE(m_Camera);
 }
 
 bool Graphic::Frame()
 {
-	return Render();
+	static float rotation = 0.f;
+
+	rotation += (float)XM_PI * 0.01f;
+	if (rotation > 360.f)
+		rotation -= 360.f;
+
+	return Render(rotation);
 }
 
-bool Graphic::Render()
+bool Graphic::UpdateInput(Input* input)
+{
+	if (nullptr == input)
+		return false;
+
+	if (input->IsKeyDown('W'))
+	{
+		XMFLOAT3 camPos = m_Camera->GetPosition();
+		m_Camera->SetPosition(camPos.x, camPos.y, camPos.z + 0.1f);
+	}
+	else if(input->IsKeyDown('S'))
+	{
+		XMFLOAT3 camPos = m_Camera->GetPosition();
+		m_Camera->SetPosition(camPos.x, camPos.y, camPos.z - 0.1f);
+	}
+
+	return true;
+}
+
+bool Graphic::Render(float rotation)
 {
 	m_Direct3D->BeginScene(0.f, 0.f, 0.f, 1.f);
 
@@ -105,6 +157,12 @@ bool Graphic::Render()
 	m_ModelTexture->Render(m_Direct3D->GetDeviceContext());
 	m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_ModelTexture->GetIndexCount(),
 		world, view, proj, m_ModelTexture->GetTexture());
+#endif
+#ifdef LIGHT_MODE
+	world = XMMatrixRotationY(rotation);
+	m_ModelLight->Render(m_Direct3D->GetDeviceContext());
+	m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_ModelLight->GetIndexCount(),
+		world, view, proj, m_ModelLight->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 #endif
 
 	m_Direct3D->EndScene();

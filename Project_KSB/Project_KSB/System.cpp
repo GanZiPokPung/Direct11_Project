@@ -85,6 +85,7 @@ bool System::Frame()
 	if (m_Input->IsKeyDown(VK_ESCAPE))
 		return false;
 
+	m_Graphic->UpdateInput(m_Input);
 	return m_Graphic->Frame();
 }
 

@@ -1,0 +1,14 @@
+Direct3D 11
+
+Device 초기화
+쉐이더 초기화
+모델 초기화
+-텍스처
+카메라 초기화
+
+
+카메라 world, view, proj계산
+모델 버텍스, 인덱스 버퍼, IA에 Set
+텍스처 쉐이더에 world, view, proj, 모델텍스처 정보 Set
+쉐이더 상수버퍼로 넘어감
+쉐이더 계산 후 후면 버퍼에 그리고 Preset로 출력

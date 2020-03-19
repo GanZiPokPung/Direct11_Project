@@ -61,6 +61,15 @@ bool Texture::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	return true;
 }
 
+bool Texture::Initialize(ID3D11Device* device, WCHAR* filePath)
+{
+	// 텍스처를 파일로부터 읽어옴
+	if (FAILED(CreateDDSTextureFromFile(device, filePath, nullptr, &m_TextureView)))
+		return false;
+
+	return true;
+}
+
 void Texture::Shutdown()
 {
 	SAFE_RELEASE(m_TextureView);
