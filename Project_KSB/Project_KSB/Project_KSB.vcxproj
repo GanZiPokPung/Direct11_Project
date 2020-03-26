@@ -166,6 +166,7 @@
     <ClInclude Include="LightShader.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Model3D.h" />
     <ClInclude Include="ModelLight.h" />
     <ClInclude Include="ModelTexture.h" />
     <ClInclude Include="pch.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="ModelLight.cpp" />
     <ClCompile Include="ModelTexture.cpp" />
     <ClCompile Include="Texture.cpp" />

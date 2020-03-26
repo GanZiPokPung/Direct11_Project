@@ -13,6 +13,7 @@ class TextureShader;
 class ModelLight;
 class LightShader;
 class Light;
+class Model3D;
 class Input;
 class Graphic
 {
@@ -49,7 +50,8 @@ private:
 
 #ifdef LIGHT_MODE
 	// light
-	ModelLight* m_ModelLight = nullptr;
+	//ModelLight* m_ModelLight = nullptr;
+	Model3D* m_Model3D = nullptr;
 	LightShader* m_LightShader = nullptr;
 	Light* m_Light = nullptr;
 #endif

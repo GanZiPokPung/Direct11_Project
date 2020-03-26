@@ -138,6 +138,9 @@
     <ClInclude Include="Light.h">
       <Filter>00.Core\Graphic\Light</Filter>
     </ClInclude>
+    <ClInclude Include="Model3D.h">
+      <Filter>00.Core\Graphic\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>00.Core\Graphic\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Model3D.cpp">
+      <Filter>00.Core\Graphic\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

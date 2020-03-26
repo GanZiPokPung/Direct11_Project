@@ -9,7 +9,9 @@
 #include "Light.h"
 #include "LightShader.h"
 #include "ModelLight.h"
+#include "Model3D.h"
 #include "Input.h"
+
 
 Graphic::Graphic()
 {
@@ -71,19 +73,28 @@ bool Graphic::Initialize(int width, int height, HWND hwnd)
 		MSG_ERROR(hwnd, L"Could not initialize shader! : Light");
 		return false;
 	}
-	m_ModelLight = new ModelLight;
+	/*m_ModelLight = new ModelLight;
 	if (!m_ModelLight->Initialize(m_Direct3D->GetDevice(), L"../Project_KSB/data/seafloor.dds"))
+	{
+		MSG_ERROR(hwnd, L"Could not initialize the model object.");
+		return false;
+	}*/
+	m_Model3D = new Model3D;
+	if (!m_Model3D->Initialize(m_Direct3D->GetDevice(), "../Project_KSB/data/seahawk.txt", L"../Project_KSB/data/seafloor.dds"))
 	{
 		MSG_ERROR(hwnd, L"Could not initialize the model object.");
 		return false;
 	}
 	m_Light = new Light;
+	m_Light->SetAmbientColor(0.15f, 0.15f, 0.15f, 1.f);
 	m_Light->SetDiffuseColor(1.f, 1.f, 1.f, 1.f);
-	m_Light->SetDirection(1.f, 0.f, 1.f);
+	m_Light->SetDirection(0.f, 0.f, 1.f);
+	m_Light->SetSpecularColor(0.5f, 0.5f, 0.5f, 1.f);
+	m_Light->SetSpecularPower(32.f);
 #endif
 
 	m_Camera = new Camera;
-	m_Camera->SetPosition(0.f, 0.f, -5.f);
+	m_Camera->SetPosition(0.f, 0.f, -100.f);
 
 	return true;
 }
@@ -101,7 +112,8 @@ void Graphic::Shutdown()
 #endif
 #ifdef LIGHT_MODE
 	SAFE_SHUTDOWN(m_LightShader);
-	SAFE_SHUTDOWN(m_ModelLight);
+	//SAFE_SHUTDOWN(m_ModelLight);
+	SAFE_SHUTDOWN(m_Model3D);
 	SAFE_DELETE(m_Light);
 #endif
 	SAFE_DELETE(m_Camera);
@@ -160,9 +172,14 @@ bool Graphic::Render(float rotation)
 #endif
 #ifdef LIGHT_MODE
 	world = XMMatrixRotationY(rotation);
-	m_ModelLight->Render(m_Direct3D->GetDeviceContext());
-	m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_ModelLight->GetIndexCount(),
-		world, view, proj, m_ModelLight->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	//m_ModelLight->Render(m_Direct3D->GetDeviceContext());
+	m_Model3D->Render(m_Direct3D->GetDeviceContext());
+	/*m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_ModelLight->GetIndexCount(),
+		world, view, proj, m_ModelLight->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());*/
+	m_LightShader->Render(m_Direct3D->GetDeviceContext(), m_Model3D->GetIndexCount(),
+		world, view, proj, m_Model3D->GetTexture(), m_Camera->GetPosition(), 
+		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(),
+		m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
 #endif
 
 	m_Direct3D->EndScene();

@@ -3,9 +3,11 @@ SamplerState SampleType;
 
 cbuffer LightBuffer
 {
+	float4 ambientColor;
 	float4 diffuseColor;
 	float3 lightDirection;
-	float padding;
+	float specularPower;
+	float4 specularColor;
 };
 
 struct PixelInputType
@@ -13,20 +15,30 @@ struct PixelInputType
 	float4 position : SV_POSITION;
 	float2 tex : TEXCOORD0;
 	float3 normal : NORMAL;
+	float3 viewDirection : TEXCOORD1;
 };
 
 float4 LightPixelShader(PixelInputType input) : SV_TARGET
 {
-	float4 textureColor;
-	float3 lightDir;
-	float lightIntensity;
-	float4 color;
+	float4 textureColor = shaderTexture.Sample(SampleType, input.tex);
+	float4 color = ambientColor;
+	float4 specular = float4(0.f, 0.f, 0.f, 0.f);
+	float3 lightDir = -lightDirection;
+	float lightIntensity = saturate(dot(input.normal, lightDir));
 
-	textureColor = shaderTexture.Sample(SampleType, input.tex);
+	if(lightIntensity > 0.f)
+	{
+		color += (diffuseColor * lightIntensity);
+		color = saturate(color);
 
-	lightDir = -lightDirection;
-	lightIntensity = saturate(dot(input.normal, lightDir));
-	color = saturate(diffuseColor * lightIntensity);
+		// 반사벡터 = 2 * 빛의 강도 * 법선 - 빛의 방향
+		float3 reflection = normalize(2 * lightIntensity * input.normal - lightDir);
+		// 반사광 = 반사빛의 색 * (보는 방향과 반사벡터의 내적) ^ 반사강도
+		specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
+	}
+	
 	color = color * textureColor;
+	color = saturate(color + specular);
+
 	return color;
 }

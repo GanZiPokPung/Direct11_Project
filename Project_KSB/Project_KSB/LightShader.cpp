@@ -24,9 +24,11 @@ void LightShader::Shutdown()
 	ShutdownShader();
 }
 
-bool LightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX world, XMMATRIX view, XMMATRIX proj, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDir, XMFLOAT4 diffuseColor)
+bool LightShader::Render(ID3D11DeviceContext* deviceContext, int indexCount, XMMATRIX world, XMMATRIX view, XMMATRIX proj, ID3D11ShaderResourceView* texture, 
+	XMFLOAT3 cameraPosition, XMFLOAT3 lightDir, XMFLOAT4 diffuseColor, XMFLOAT4 ambientColor, XMFLOAT4 specularColor, float specularPower)
 {
-	if (!SetShaderParameters(deviceContext, world, view, proj, texture, lightDir, diffuseColor))
+	if (!SetShaderParameters(deviceContext, world, view, proj, texture, cameraPosition,
+		lightDir, diffuseColor, ambientColor, specularColor, specularPower))
 		return false;
 
 	RenderShader(deviceContext, indexCount);
@@ -140,6 +142,19 @@ bool LightShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsPat
 	if (FAILED(device->CreateBuffer(&matrixBufferDesc, NULL, &m_MatrixBuffer)))
 		return false;
 
+	// 카메라 상수 버퍼
+	D3D11_BUFFER_DESC cameraBufferDesc;
+	cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
+	cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cameraBufferDesc.MiscFlags = 0;
+	cameraBufferDesc.StructureByteStride = 0;
+
+	// 상수 버퍼 포인터를 만들어 이 클래스에서 정점 셰이더 상수 버퍼에 접근할 수 있게 한다.
+	if (FAILED(device->CreateBuffer(&cameraBufferDesc, NULL, &m_CameraBuffer)))
+		return false;
+
 	// 광원 상수 버퍼
 	D3D11_BUFFER_DESC lightBufferDesc;
 	lightBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -159,6 +174,7 @@ bool LightShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsPat
 void LightShader::ShutdownShader()
 {
 	SAFE_RELEASE(m_MatrixBuffer);
+	SAFE_RELEASE(m_CameraBuffer);
 	SAFE_RELEASE(m_LightBuffer);
 	SAFE_RELEASE(m_Layout);
 	SAFE_RELEASE(m_PixelShader);
@@ -176,7 +192,8 @@ void LightShader::OutputShaderErrorMessage(ID3D10Blob* blob, HWND hwnd, WCHAR* s
 	MessageBox(hwnd, L"Error compiling shader", shaderPath, MB_OK);
 }
 
-bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX world, XMMATRIX view, XMMATRIX proj, ID3D11ShaderResourceView* texture, XMFLOAT3 lightDir, XMFLOAT4 diffuseColor)
+bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATRIX world, XMMATRIX view, XMMATRIX proj, ID3D11ShaderResourceView* texture, 
+	XMFLOAT3 cameraPosition, XMFLOAT3 lightDir, XMFLOAT4 diffuseColor, XMFLOAT4 ambientColor, XMFLOAT4 specularColor, float specularPower)
 {
 	world = XMMatrixTranspose(world);
 	view = XMMatrixTranspose(view);
@@ -203,18 +220,34 @@ bool LightShader::SetShaderParameters(ID3D11DeviceContext* deviceContext, XMMATR
 	// 정점 셰이더의 상수 버퍼를 바뀐 값으로 바꾼다.
 	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_MatrixBuffer);
 
-	// 픽셀 셰이더에서 셰이더 텍스처 리소스를 설정
+	// 카메라 버퍼의 내용을 쓸 수 있게 잠금
+	if (FAILED(deviceContext->Map(m_CameraBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+		return false;
+
+	CameraBufferType* dataPtr2 = (CameraBufferType*)mappedResource.pData;
+
+	dataPtr2->cameraPosition = cameraPosition;
+	dataPtr2->padding = 0.f;
+
+	deviceContext->Unmap(m_CameraBuffer, 0);
+
+	bufferNumber = 1;
+
+	deviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_CameraBuffer);
+	
 	deviceContext->PSSetShaderResources(0, 1, &texture);
 
 	// 라이트 버퍼의 내용을 쓸 수 있게 잠금
 	if (FAILED(deviceContext->Map(m_LightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 		return false;
 
-	LightBufferType* dataPtr2 = (LightBufferType*)mappedResource.pData;
+	LightBufferType* dataPtr3 = (LightBufferType*)mappedResource.pData;
 
-	dataPtr2->diffuseColor = diffuseColor;
-	dataPtr2->lightDirection = lightDir;
-	dataPtr2->padding = 0.f;
+	dataPtr3->ambientColor = ambientColor;
+	dataPtr3->diffuseColor = diffuseColor;
+	dataPtr3->lightDirection = lightDir;
+	dataPtr3->specularPower = specularPower;
+	dataPtr3->specularColor = specularColor;
 
 	deviceContext->Unmap(m_LightBuffer, 0);
 
