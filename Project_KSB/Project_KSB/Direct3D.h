@@ -23,6 +23,9 @@ public:
 	void BeginScene(float r, float g, float b, float a);
 	void EndScene();
 
+	void TurnZBufferOn();
+	void TurnZBufferOff();
+
 private:
 	bool m_vsyncCheck = false;
 
@@ -44,5 +47,7 @@ private:
 	XMMATRIX m_projection;
 	XMMATRIX m_world;
 	XMMATRIX m_ortho;
+
+	ID3D11DepthStencilState* m_DepthDisabledStencilState = nullptr;
 };
 

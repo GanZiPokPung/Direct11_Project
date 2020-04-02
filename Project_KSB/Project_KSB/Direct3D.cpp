@@ -283,7 +283,7 @@ bool Direct3D::Initialize(int width, int height, bool vsync, HWND hwnd, bool ful
 	viewport.Width = (float)width;
 	viewport.Height = (float)height;
 	viewport.MinDepth = 0.f;
-	viewport.MaxDepth = 0.f;
+	viewport.MaxDepth = 1.f;
 	viewport.TopLeftX = 0.f;
 	viewport.TopLeftY = 0.f;
 
@@ -295,6 +295,34 @@ bool Direct3D::Initialize(int width, int height, bool vsync, HWND hwnd, bool ful
 	m_projection = XMMatrixPerspectiveFovLH(FOV, aspect, Near, Far);
 	m_world = XMMatrixIdentity();
 	m_ortho = XMMatrixOrthographicLH((float)width, (float)height, Near, Far);
+
+	// 2D ·»´õ¸µÀ» À§ÇØ Z ¹öÆÛ¸¦ ²ô´Â ½ºÅÙ½Ç »óÅÂ
+	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
+	Z_Memory(depthDisabledStencilDesc);
+
+	depthDisabledStencilDesc.DepthEnable = false;
+	depthDisabledStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthDisabledStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depthDisabledStencilDesc.StencilEnable = true;
+	depthDisabledStencilDesc.StencilReadMask = 0xFF;
+	depthDisabledStencilDesc.StencilWriteMask = 0xFF;
+
+	depthDisabledStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthDisabledStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	depthDisabledStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	if (FAILED(m_Device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_DepthDisabledStencilState)))
+	{
+		MSG_ERROR(hwnd, L"Create Z depth stencil state failed!");
+		return false;
+	}
 
 	return true;
 }
@@ -310,6 +338,7 @@ void Direct3D::Shutdown()
 	SAFE_RELEASE(m_RasterState);
 	SAFE_RELEASE(m_DepthStencilView);
 	SAFE_RELEASE(m_DepthStencilState);
+	SAFE_RELEASE(m_DepthDisabledStencilState);
 	SAFE_RELEASE(m_DepthStencilBuffer);
 	SAFE_RELEASE(m_RenderTargetView);
 	SAFE_RELEASE(m_DeviceContext);
@@ -331,4 +360,14 @@ void Direct3D::EndScene()
 		m_SwapChain->Present(1, 0);
 	else
 		m_SwapChain->Present(0, 0);
+}
+
+void Direct3D::TurnZBufferOn()
+{
+	m_DeviceContext->OMSetDepthStencilState(m_DepthStencilState, 1);
+}
+
+void Direct3D::TurnZBufferOff()
+{
+	m_DeviceContext->OMSetDepthStencilState(m_DepthDisabledStencilState, 1);
 }

@@ -2,7 +2,8 @@
 
 //#define COLOR_MODE
 //#define TEXTURE_MODE
-#define LIGHT_MODE
+//#define LIGHT_MODE
+#define TWO_D_MODE
 
 class Direct3D;
 class Camera;
@@ -15,6 +16,7 @@ class LightShader;
 class Light;
 class Model3D;
 class Input;
+class ModelBitmap;
 class Graphic
 {
 public:
@@ -54,6 +56,12 @@ private:
 	Model3D* m_Model3D = nullptr;
 	LightShader* m_LightShader = nullptr;
 	Light* m_Light = nullptr;
+#endif
+
+#ifdef TWO_D_MODE
+	// 2d
+	TextureShader* m_TextureShader = nullptr;
+	ModelBitmap* m_ModelBitmap = nullptr;
 #endif
 };
 

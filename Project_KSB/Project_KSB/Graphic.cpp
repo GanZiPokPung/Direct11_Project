@@ -11,6 +11,7 @@
 #include "ModelLight.h"
 #include "Model3D.h"
 #include "Input.h"
+#include "ModelBitmap.h"
 
 
 Graphic::Graphic()
@@ -80,7 +81,7 @@ bool Graphic::Initialize(int width, int height, HWND hwnd)
 		return false;
 	}*/
 	m_Model3D = new Model3D;
-	if (!m_Model3D->Initialize(m_Direct3D->GetDevice(), "../Project_KSB/data/seahawk.txt", L"../Project_KSB/data/seafloor.dds"))
+	if (!m_Model3D->Initialize(m_Direct3D->GetDevice(), "../Project_KSB/data/cube.txt", L"../Project_KSB/data/seafloor.dds"))
 	{
 		MSG_ERROR(hwnd, L"Could not initialize the model object.");
 		return false;
@@ -93,8 +94,24 @@ bool Graphic::Initialize(int width, int height, HWND hwnd)
 	m_Light->SetSpecularPower(32.f);
 #endif
 
+#ifdef TWO_D_MODE
+	m_TextureShader = new TextureShader;
+	if (!m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd))
+	{
+		MSG_ERROR(hwnd, L"Could not initialize shader.");
+		return false;
+	}
+
+	m_ModelBitmap = new ModelBitmap;
+	if (!m_ModelBitmap->Initialize(m_Direct3D->GetDevice(), width, height, L"../Project_KSB/data/seafloor.dds", 256, 256))
+	{
+		MSG_ERROR(hwnd, L"Could not initialize the model object.");
+		return false;
+	}
+#endif
+
 	m_Camera = new Camera;
-	m_Camera->SetPosition(0.f, 0.f, -100.f);
+	m_Camera->SetPosition(0.f, 0.f, -6.f);
 
 	return true;
 }
@@ -115,6 +132,10 @@ void Graphic::Shutdown()
 	//SAFE_SHUTDOWN(m_ModelLight);
 	SAFE_SHUTDOWN(m_Model3D);
 	SAFE_DELETE(m_Light);
+#endif
+#ifdef TWO_D_MODE
+	SAFE_SHUTDOWN(m_TextureShader);
+	SAFE_SHUTDOWN(m_ModelBitmap);
 #endif
 	SAFE_DELETE(m_Camera);
 }
@@ -159,6 +180,7 @@ bool Graphic::Render(float rotation)
 	m_Direct3D->GetWorldMatrix(world);
 	m_Camera->GetViewMatrix(view);
 	m_Direct3D->GetProjectionMatrix(proj);
+	
 
 #ifdef COLOR_MODE
 	m_Model->Render(m_Direct3D->GetDeviceContext());
@@ -180,6 +202,22 @@ bool Graphic::Render(float rotation)
 		world, view, proj, m_Model3D->GetTexture(), m_Camera->GetPosition(), 
 		m_Light->GetDirection(), m_Light->GetDiffuseColor(), m_Light->GetAmbientColor(),
 		m_Light->GetSpecularColor(), m_Light->GetSpecularPower());
+#endif
+#ifdef TWO_D_MODE
+	XMMATRIX ortho;
+	m_Direct3D->GetOrthoMatrix(ortho);
+	
+	m_Direct3D->TurnZBufferOff();
+
+	if (!m_ModelBitmap->Render(m_Direct3D->GetDeviceContext(), 300, 300))
+		return false;
+
+	if (!m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_ModelBitmap->GetIndexCount(),
+		world, view, ortho, m_ModelBitmap->GetTexture()))
+		return false;
+
+	m_Direct3D->TurnZBufferOn();
+
 #endif
 
 	m_Direct3D->EndScene();
