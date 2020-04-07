@@ -140,7 +140,7 @@ void Graphic::Shutdown()
 	SAFE_DELETE(m_Camera);
 }
 
-bool Graphic::Frame()
+bool Graphic::Frame(int fps, int cpuPercentage, float time)
 {
 	static float rotation = 0.f;
 

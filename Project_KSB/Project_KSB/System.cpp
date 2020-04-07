@@ -2,6 +2,9 @@
 #include "System.h"
 #include "Graphic.h"
 #include "Input.h"
+#include "Fps.h"
+#include "Cpu.h"
+#include "Timer.h"
 
 System::System()
 {
@@ -26,14 +29,29 @@ bool System::Initialize()
 	m_Input->Initialize();
 
 	m_Graphic = new Graphic;
+	if (!m_Graphic->Initialize(screenWidth, screenHeight, m_hWnd))
+		return false;
 
-	return m_Graphic->Initialize(screenWidth, screenHeight, m_hWnd);
+	m_Fps = new Fps;
+	m_Fps->Initialize();
+
+	m_Cpu = new Cpu;
+	m_Cpu->Initialize();
+
+	m_Timer = new Timer;
+	if (!m_Timer->Initialize())
+		return false;
+
+	return true;
 }
 
 void System::Shutdown()
 {
 	SAFE_SHUTDOWN(m_Graphic);
 	SAFE_DELETE(m_Input);
+	SAFE_SHUTDOWN(m_Cpu);
+	SAFE_DELETE(m_Timer);
+	SAFE_DELETE(m_Fps);
 
 	ShutdownWindows();
 }
@@ -82,11 +100,15 @@ LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lpara
 
 bool System::Frame()
 {
+	m_Timer->Frame();
+	m_Fps->Frame();
+	m_Cpu->Frame();
+
 	if (m_Input->IsKeyDown(VK_ESCAPE))
 		return false;
 
 	m_Graphic->UpdateInput(m_Input);
-	return m_Graphic->Frame();
+	return m_Graphic->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime());
 }
 
 void System::InitializeWindows(int& width, int& height)

@@ -26,7 +26,7 @@ public:
 
 	bool Initialize(int width, int height, HWND hwnd);
 	void Shutdown();
-	bool Frame();
+	bool Frame(int fps, int cpuPercentage, float time);
 
 	// 임시 코드
 	bool UpdateInput(Input* input);

@@ -64,6 +64,24 @@
     <Filter Include="00.Core\Graphic\Light">
       <UniqueIdentifier>{bde631a4-6f99-4e3d-8faf-b4870d4f04e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Core\Text">
+      <UniqueIdentifier>{85ab44b4-03a9-402f-a155-5d4e91af0156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\Text\FPS">
+      <UniqueIdentifier>{309542a2-d12c-4aaa-a1e3-09d968b0fa44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\System\CPU">
+      <UniqueIdentifier>{e6f4faf7-a5f6-4cd6-b90d-27ed12b64a83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\System\Timer">
+      <UniqueIdentifier>{b8771283-eea0-43a2-b211-d123d2debf7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\Text\Font">
+      <UniqueIdentifier>{8a82de6c-0147-4c12-a4b9-c4483a3df59d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\Graphic\Shader\Font">
+      <UniqueIdentifier>{5e79c9a1-6733-4f3e-8217-03ab8499065c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -144,6 +162,24 @@
     <ClInclude Include="ModelBitmap.h">
       <Filter>00.Core\Graphic\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Fps.h">
+      <Filter>00.Core\Text\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Cpu.h">
+      <Filter>00.Core\System\CPU</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>00.Core\System\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>00.Core\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>00.Core\Text\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="FontShader.h">
+      <Filter>00.Core\Graphic\Shader\Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -200,6 +236,24 @@
     <ClCompile Include="ModelBitmap.cpp">
       <Filter>00.Core\Graphic\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Fps.cpp">
+      <Filter>00.Core\Text\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Cpu.cpp">
+      <Filter>00.Core\System\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>00.Core\System\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>00.Core\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>00.Core\Text\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="FontShader.cpp">
+      <Filter>00.Core\Graphic\Shader\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project_KSB.rc">
@@ -233,5 +287,13 @@
     <FxCompile Include="Light.vs">
       <Filter>00.Core\Graphic\Shader\Light</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Font.ps">
+      <Filter>00.Core\Graphic\Shader\Font</Filter>
+    </None>
+    <None Include="Font.vs">
+      <Filter>00.Core\Graphic\Shader\Font</Filter>
+    </None>
   </ItemGroup>
 </Project>
