@@ -5,6 +5,7 @@
 #include "Fps.h"
 #include "Cpu.h"
 #include "Timer.h"
+#include "InputDX.h"
 
 System::System()
 {
@@ -25,8 +26,9 @@ bool System::Initialize()
 
 	InitializeWindows(screenWidth, screenHeight);
 
-	m_Input = new Input;
-	m_Input->Initialize();
+	m_InputDX = new InputDX;
+	if (!m_InputDX->Initialize(m_hInstance, m_hWnd, screenWidth, screenHeight))
+		return false;
 
 	m_Graphic = new Graphic;
 	if (!m_Graphic->Initialize(screenWidth, screenHeight, m_hWnd))
@@ -48,7 +50,7 @@ bool System::Initialize()
 void System::Shutdown()
 {
 	SAFE_SHUTDOWN(m_Graphic);
-	SAFE_DELETE(m_Input);
+	SAFE_SHUTDOWN(m_InputDX);
 	SAFE_SHUTDOWN(m_Cpu);
 	SAFE_DELETE(m_Timer);
 	SAFE_DELETE(m_Fps);
@@ -76,39 +78,35 @@ void System::Run()
 			if (!Frame())
 				break;
 		}
+
+		if (m_InputDX->IsEscapePressed())
+			break;
 	}
 }
 
 LRESULT System::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
 {
-	switch (umsg)
-	{
-	case WM_KEYDOWN:
-		m_Input->KeyDown((unsigned int)wparam);
-		return 0;
-
-	case WM_KEYUP:
-		m_Input->KeyUp((unsigned int)wparam);
-		return 0;
-
-	default:
-		// 그 외 메시지들은 기본 메시지 처리로 넘김
-		return DefWindowProc(hwnd, umsg, wparam, lparam);
-
-	}
+	return DefWindowProc(hwnd, umsg, wparam, lparam);
 }
 
 bool System::Frame()
 {
+	int mouseX = 0, mouseY = 0;
+
+	if (!m_InputDX->Frame())
+		return false;
+
 	m_Timer->Frame();
 	m_Fps->Frame();
 	m_Cpu->Frame();
 
-	if (m_Input->IsKeyDown(VK_ESCAPE))
+	m_InputDX->GetMouseLocation(mouseX, mouseY);
+	//m_InputDX->GetKeyState();
+
+	if (!m_Graphic->Frame(mouseX, mouseY))
 		return false;
 
-	m_Graphic->UpdateInput(m_Input);
-	return m_Graphic->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime());
+	return m_Graphic->Render();
 }
 
 void System::InitializeWindows(int& width, int& height)

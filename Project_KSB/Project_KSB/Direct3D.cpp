@@ -324,6 +324,27 @@ bool Direct3D::Initialize(int width, int height, bool vsync, HWND hwnd, bool ful
 		return false;
 	}
 
+	// 블랜드 상태
+	D3D11_BLEND_DESC blendStateDescription;
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	if (FAILED(m_Device->CreateBlendState(&blendStateDescription, &m_AlphaEnableBlendingState)))
+		return false;
+
+	blendStateDescription.RenderTarget[0].BlendEnable = FALSE;
+
+	if (FAILED(m_Device->CreateBlendState(&blendStateDescription, &m_AlphaDisableBlendingState)))
+		return false;
+
 	return true;
 }
 
@@ -344,6 +365,8 @@ void Direct3D::Shutdown()
 	SAFE_RELEASE(m_DeviceContext);
 	SAFE_RELEASE(m_Device);
 	SAFE_RELEASE(m_SwapChain);
+	SAFE_RELEASE(m_AlphaDisableBlendingState);
+	SAFE_RELEASE(m_AlphaEnableBlendingState);
 }
 
 void Direct3D::BeginScene(float r, float g, float b, float a)
@@ -370,4 +393,16 @@ void Direct3D::TurnZBufferOn()
 void Direct3D::TurnZBufferOff()
 {
 	m_DeviceContext->OMSetDepthStencilState(m_DepthDisabledStencilState, 1);
+}
+
+void Direct3D::TurnAlphaBlendingOn()
+{
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+	m_DeviceContext->OMSetBlendState(m_AlphaEnableBlendingState, blendFactor, 0xffffffff);
+}
+
+void Direct3D::TurnAlphaBlendingOff()
+{
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+	m_DeviceContext->OMSetBlendState(m_AlphaDisableBlendingState, blendFactor, 0xffffffff);
 }

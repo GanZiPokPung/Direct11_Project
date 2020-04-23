@@ -6,7 +6,6 @@ cbuffer PixelBuffer
     float4 pixelColor;
 };
 
-
 struct PixelInputType
 {
     float4 position : SV_POSITION;
@@ -17,14 +16,12 @@ float4 FontPixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 color;
 	
-	
 	color = shaderTexture.Sample(SampleType, input.tex);
 	
 	if(color.r == 0.0f)
 	{
 		color.a = 0.0f;
 	}
-	
 	else
 	{
 		color.rgb = pixelColor.rgb;

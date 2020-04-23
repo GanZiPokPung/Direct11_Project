@@ -56,7 +56,7 @@ void Font::BuildVertexArray(void* vertices, char* sentence, float drawX, float d
 			vertexPtr[index].tex = XMFLOAT2(m_Font[letter].left, 0.0f);
 			index++;
 
-			vertexPtr[index].pos = XMFLOAT3((drawX + m_Font[letter].Size), (drawY - 16), 0.0f);  // Bottom right.
+			vertexPtr[index].pos = XMFLOAT3((drawX + m_Font[letter].size), (drawY - 16), 0.0f);  // Bottom right.
 			vertexPtr[index].tex = XMFLOAT2(m_Font[letter].right, 1.0f);
 			index++;
 
@@ -68,15 +68,15 @@ void Font::BuildVertexArray(void* vertices, char* sentence, float drawX, float d
 			vertexPtr[index].tex = XMFLOAT2(m_Font[letter].left, 0.0f);
 			index++;
 
-			vertexPtr[index].pos = XMFLOAT3(drawX + m_Font[letter].Size, drawY, 0.0f);  // Top right.
+			vertexPtr[index].pos = XMFLOAT3(drawX + m_Font[letter].size, drawY, 0.0f);  // Top right.
 			vertexPtr[index].tex = XMFLOAT2(m_Font[letter].right, 0.0f);
 			index++;
 
-			vertexPtr[index].pos = XMFLOAT3((drawX + m_Font[letter].Size), (drawY - 16), 0.0f);  // Bottom right.
+			vertexPtr[index].pos = XMFLOAT3((drawX + m_Font[letter].size), (drawY - 16), 0.0f);  // Bottom right.
 			vertexPtr[index].tex = XMFLOAT2(m_Font[letter].right, 1.0f);
 			index++;
 
-			drawX = drawX + m_Font[letter].Size + 1.0f;
+			drawX = drawX + m_Font[letter].size + 1.0f;
 		}
 	}
 }
@@ -107,9 +107,12 @@ bool Font::LoadFontData(char* fontPath)
 
 		fin >> m_Font[i].left;
 		fin >> m_Font[i].right;
+		fin >> m_Font[i].size;
 	}
 
-	return false;
+	fin.close();
+
+	return true;
 }
 
 void Font::ReleaseFontData()

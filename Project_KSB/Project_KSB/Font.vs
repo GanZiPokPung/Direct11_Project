@@ -17,7 +17,6 @@ struct PixelInputType
     float2 tex : TEXCOORD0;
 };
 
-
 PixelInputType FontVertexShader(VertexInputType input)
 {
     PixelInputType output;

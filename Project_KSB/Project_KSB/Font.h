@@ -8,7 +8,7 @@ private:
 	struct FontType
 	{
 		float left, right;
-		int Size;
+		int size;
 	};
 	struct VertexType
 	{

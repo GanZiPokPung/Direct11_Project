@@ -1,10 +1,10 @@
 #pragma once
 
-class Input;
 class Graphic;
 class Fps;
 class Cpu;
 class Timer;
+class InputDX;
 class System
 {
 public:
@@ -28,7 +28,7 @@ private:
 	HINSTANCE	m_hInstance;
 	HWND		m_hWnd;
 
-	Input*		m_Input = nullptr;
+	InputDX* m_InputDX = nullptr;
 	Graphic*	m_Graphic = nullptr;
 	Fps*        m_Fps = nullptr;
 	Cpu*        m_Cpu = nullptr;

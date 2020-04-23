@@ -26,6 +26,8 @@ public:
 	void TurnZBufferOn();
 	void TurnZBufferOff();
 
+	void TurnAlphaBlendingOn();
+	void TurnAlphaBlendingOff();
 private:
 	bool m_vsyncCheck = false;
 
@@ -49,5 +51,7 @@ private:
 	XMMATRIX m_ortho;
 
 	ID3D11DepthStencilState* m_DepthDisabledStencilState = nullptr;
+	ID3D11BlendState* m_AlphaEnableBlendingState = nullptr;
+	ID3D11BlendState* m_AlphaDisableBlendingState = nullptr;
 };
 

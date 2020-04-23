@@ -3,7 +3,8 @@
 //#define COLOR_MODE
 //#define TEXTURE_MODE
 //#define LIGHT_MODE
-#define TWO_D_MODE
+//#define TWO_D_MODE
+#define TEXT_MODE
 
 class Direct3D;
 class Camera;
@@ -17,6 +18,7 @@ class Light;
 class Model3D;
 class Input;
 class ModelBitmap;
+class Text;
 class Graphic
 {
 public:
@@ -26,13 +28,11 @@ public:
 
 	bool Initialize(int width, int height, HWND hwnd);
 	void Shutdown();
-	bool Frame(int fps, int cpuPercentage, float time);
+	bool Frame(int mouseX, int mouseY);
+	bool Render();
 
 	// 임시 코드
 	bool UpdateInput(Input* input);
-
-private:
-	bool Render(float rotation);
 
 private:
 	Direct3D* m_Direct3D = nullptr;
@@ -62,6 +62,10 @@ private:
 	// 2d
 	TextureShader* m_TextureShader = nullptr;
 	ModelBitmap* m_ModelBitmap = nullptr;
+#endif
+
+#ifdef TEXT_MODE
+	Text* m_Text = nullptr;
 #endif
 };
 
