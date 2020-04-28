@@ -6,6 +6,7 @@
 #include "Cpu.h"
 #include "Timer.h"
 #include "InputDX.h"
+#include "Sound.h"
 
 System::System()
 {
@@ -34,6 +35,10 @@ bool System::Initialize()
 	if (!m_Graphic->Initialize(screenWidth, screenHeight, m_hWnd))
 		return false;
 
+	m_Sound = new Sound;
+	if (!m_Sound->Initialize(m_hWnd))
+		return false;
+
 	m_Fps = new Fps;
 	m_Fps->Initialize();
 
@@ -51,9 +56,11 @@ void System::Shutdown()
 {
 	SAFE_SHUTDOWN(m_Graphic);
 	SAFE_SHUTDOWN(m_InputDX);
+	SAFE_SHUTDOWN(m_Sound);
 	SAFE_SHUTDOWN(m_Cpu);
 	SAFE_DELETE(m_Timer);
 	SAFE_DELETE(m_Fps);
+
 
 	ShutdownWindows();
 }

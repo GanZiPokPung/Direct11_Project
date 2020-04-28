@@ -178,6 +178,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Project_KSB.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="System.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Text.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="ModelBitmap.cpp" />
     <ClCompile Include="ModelLight.cpp" />
     <ClCompile Include="ModelTexture.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureShader.cpp" />

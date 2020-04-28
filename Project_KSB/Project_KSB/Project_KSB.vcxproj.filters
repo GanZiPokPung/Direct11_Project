@@ -82,6 +82,9 @@
     <Filter Include="00.Core\System\Input">
       <UniqueIdentifier>{7eb753ad-b615-4b0a-ab4c-34a51ccbe8d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Core\System\Sound">
+      <UniqueIdentifier>{19ad8801-fac0-4159-9009-26fbe971d0bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="InputDX.h">
       <Filter>00.Core\System\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>00.Core\System\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -259,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="InputDX.cpp">
       <Filter>00.Core\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>00.Core\System\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
