@@ -158,9 +158,15 @@ void Graphic::Shutdown()
 	SAFE_DELETE(m_Camera);
 }
 
-bool Graphic::Frame(int mouseX, int mouseY)
+bool Graphic::Frame(int fps, int cpu, float timeDelta)
 {
-	if (!m_Text->SetMousePosition(mouseX, mouseY, m_Direct3D->GetDeviceContext()))
+	/*if (!m_Text->SetMousePosition(mouseX, mouseY, m_Direct3D->GetDeviceContext()))
+		return false;*/
+
+	if (!m_Text->SetFps(fps, m_Direct3D->GetDeviceContext()))
+		return false;
+
+	if (!m_Text->SetCpu(cpu, m_Direct3D->GetDeviceContext()))
 		return false;
 
 	m_Camera->SetPosition(0.f, 0.f, -10.f);

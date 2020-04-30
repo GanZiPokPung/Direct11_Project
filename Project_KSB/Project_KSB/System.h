@@ -1,5 +1,7 @@
 #pragma once
 
+//#define SOUND_MODE
+
 class Graphic;
 class Fps;
 class Cpu;
@@ -34,7 +36,9 @@ private:
 	Fps*        m_Fps = nullptr;
 	Cpu*        m_Cpu = nullptr;
 	Timer*      m_Timer = nullptr;
+#ifdef SOUND_MODE
 	Sound*		m_Sound = nullptr;
+#endif
 };
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);

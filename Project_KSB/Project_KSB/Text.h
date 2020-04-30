@@ -32,6 +32,9 @@ public:
 
 	bool SetMousePosition(int x, int y, ID3D11DeviceContext* deviceContext);
 	bool SetKeyState(char key, ID3D11DeviceContext* deviceContext);
+
+	bool SetFps(int fps, ID3D11DeviceContext* deviceContext);
+	bool SetCpu(int cpu, ID3D11DeviceContext* deviceContext);
 private:
 	bool InitializeSentence(SentenceType** sentence, int maxLength, ID3D11Device* device);
 	bool UpdateSentence(SentenceType* sentence, char* text, int posX, int posY, 

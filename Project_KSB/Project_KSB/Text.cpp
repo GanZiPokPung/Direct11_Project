@@ -101,6 +101,57 @@ bool Text::SetKeyState(char key, ID3D11DeviceContext* deviceContext)
 	return true;
 }
 
+bool Text::SetFps(int fps, ID3D11DeviceContext* deviceContext)
+{
+	if (fps > 9999)
+		fps = 9999;
+
+	char tempString[16] = { 0, };
+	_itoa_s(fps, tempString, 10);
+
+	char fpsString[16] = { 0, };
+	strcpy_s(fpsString, "Fps: ");
+	strcat_s(fpsString, tempString);
+
+	float red = 0, green = 0, blue = 0;
+
+	if (fps >= 60)
+	{
+		red = 0.f;
+		green = 1.f;
+		blue = 0.f;
+	}
+
+	if (fps < 60)
+	{
+		red = 1.f;
+		green = 1.f;
+		blue = 0.f;
+	}
+	
+	if (fps < 30)
+	{
+		red = 1.f;
+		green = 0.f;
+		blue = 0.f;
+	}
+
+	return UpdateSentence(m_Sentence1, fpsString, 20, 20, red, green, blue, deviceContext);
+}
+
+bool Text::SetCpu(int cpu, ID3D11DeviceContext* deviceContext)
+{
+	char tempString[16] = { 0, };
+	_itoa_s(cpu, tempString, 10);
+
+	char cpuString[16] = { 0, };
+	strcpy_s(cpuString, "Cpu: ");
+	strcat_s(cpuString, tempString);
+	strcat_s(cpuString, "%");
+
+	return UpdateSentence(m_Sentence2, cpuString, 20, 40, 0.f, 1.f, 0.f, deviceContext);
+}
+
 bool Text::InitializeSentence(SentenceType** sentence, int maxLength, ID3D11Device* device)
 {
 	*sentence = new SentenceType;

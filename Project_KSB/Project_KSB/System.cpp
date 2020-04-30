@@ -35,9 +35,11 @@ bool System::Initialize()
 	if (!m_Graphic->Initialize(screenWidth, screenHeight, m_hWnd))
 		return false;
 
+#ifdef SOUND_MODE
 	m_Sound = new Sound;
 	if (!m_Sound->Initialize(m_hWnd))
 		return false;
+#endif
 
 	m_Fps = new Fps;
 	m_Fps->Initialize();
@@ -56,7 +58,9 @@ void System::Shutdown()
 {
 	SAFE_SHUTDOWN(m_Graphic);
 	SAFE_SHUTDOWN(m_InputDX);
+#ifdef SOUND_MODE
 	SAFE_SHUTDOWN(m_Sound);
+#endif
 	SAFE_SHUTDOWN(m_Cpu);
 	SAFE_DELETE(m_Timer);
 	SAFE_DELETE(m_Fps);
@@ -107,10 +111,10 @@ bool System::Frame()
 	m_Fps->Frame();
 	m_Cpu->Frame();
 
-	m_InputDX->GetMouseLocation(mouseX, mouseY);
+	//m_InputDX->GetMouseLocation(mouseX, mouseY);
 	//m_InputDX->GetKeyState();
 
-	if (!m_Graphic->Frame(mouseX, mouseY))
+	if (!m_Graphic->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime()))
 		return false;
 
 	return m_Graphic->Render();

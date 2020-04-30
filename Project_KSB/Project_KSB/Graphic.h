@@ -6,6 +6,7 @@
 //#define TWO_D_MODE
 #define TEXT_MODE
 
+
 class Direct3D;
 class Camera;
 class Model;
@@ -28,7 +29,7 @@ public:
 
 	bool Initialize(int width, int height, HWND hwnd);
 	void Shutdown();
-	bool Frame(int mouseX, int mouseY);
+	bool Frame(int fps, int cpu, float timeDelta);
 	bool Render();
 
 	// 임시 코드

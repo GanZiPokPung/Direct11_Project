@@ -1,6 +1,6 @@
 #pragma once
-const bool FULL_SCREEN = true;
-const bool VSYNC_ENABLED = true;
+const bool FULL_SCREEN = false;
+const bool VSYNC_ENABLED = false;
 const float SCREEN_FAR = 1000.f;
 const float SCREEN_NEAR = 0.1f;
 const int WINDOW_WIDTH = 1600;
