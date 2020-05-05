@@ -8,6 +8,7 @@ class Cpu;
 class Timer;
 class InputDX;
 class Sound;
+class Position;
 class System
 {
 public:
@@ -39,6 +40,7 @@ private:
 #ifdef SOUND_MODE
 	Sound*		m_Sound = nullptr;
 #endif
+	Position* m_Position = nullptr;
 };
 
 static LRESULT CALLBACK WndProc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);

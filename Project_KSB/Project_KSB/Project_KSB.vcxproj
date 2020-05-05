@@ -163,6 +163,7 @@
     <ClInclude Include="FontShader.h" />
     <ClInclude Include="Fps.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Input.h" />
@@ -174,8 +175,10 @@
     <ClInclude Include="Model3D.h" />
     <ClInclude Include="ModelBitmap.h" />
     <ClInclude Include="ModelLight.h" />
+    <ClInclude Include="ModelList.h" />
     <ClInclude Include="ModelTexture.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Position.h" />
     <ClInclude Include="Project_KSB.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sound.h" />
@@ -214,6 +217,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontShader.cpp" />
     <ClCompile Include="Fps.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InputDX.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -221,7 +225,9 @@
     <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="ModelBitmap.cpp" />
     <ClCompile Include="ModelLight.cpp" />
+    <ClCompile Include="ModelList.cpp" />
     <ClCompile Include="ModelTexture.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />

@@ -7,6 +7,7 @@
 #include "Timer.h"
 #include "InputDX.h"
 #include "Sound.h"
+#include "Position.h"
 
 System::System()
 {
@@ -51,6 +52,8 @@ bool System::Initialize()
 	if (!m_Timer->Initialize())
 		return false;
 
+	m_Position = new Position;
+
 	return true;
 }
 
@@ -64,6 +67,7 @@ void System::Shutdown()
 	SAFE_SHUTDOWN(m_Cpu);
 	SAFE_DELETE(m_Timer);
 	SAFE_DELETE(m_Fps);
+	SAFE_DELETE(m_Position);
 
 
 	ShutdownWindows();
@@ -114,7 +118,18 @@ bool System::Frame()
 	//m_InputDX->GetMouseLocation(mouseX, mouseY);
 	//m_InputDX->GetKeyState();
 
-	if (!m_Graphic->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime()))
+	m_Position->SetFrameTime(m_Timer->GetTime());
+
+	bool keyDown = m_InputDX->IsLeftArrowPressed();
+	m_Position->TurnLeft(keyDown);
+
+	keyDown = m_InputDX->IsRightArrowPressed();
+	m_Position->TurnRight(keyDown);
+
+	float rotationY = 0.f;
+	m_Position->GetRotation(rotationY);
+
+	if (!m_Graphic->Frame(m_Fps->GetFps(), m_Cpu->GetCpuPercentage(), m_Timer->GetTime(), rotationY))
 		return false;
 
 	return m_Graphic->Render();

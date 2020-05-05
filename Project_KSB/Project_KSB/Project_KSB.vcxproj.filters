@@ -85,6 +85,12 @@
     <Filter Include="00.Core\System\Sound">
       <UniqueIdentifier>{19ad8801-fac0-4159-9009-26fbe971d0bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.Core\Graphic\Object\List">
+      <UniqueIdentifier>{9fd07703-40f6-4862-b532-de8fb2ef7d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Core\Graphic\Camera\pos">
+      <UniqueIdentifier>{940d0535-647f-496b-bda3-cf77bfc9d9b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -189,6 +195,15 @@
     <ClInclude Include="Sound.h">
       <Filter>00.Core\System\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>99.Default\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelList.h">
+      <Filter>00.Core\Graphic\Object\List</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>99.Default\헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Project_KSB.cpp">
@@ -268,6 +283,15 @@
     </ClCompile>
     <ClCompile Include="Sound.cpp">
       <Filter>00.Core\System\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>99.Default\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelList.cpp">
+      <Filter>00.Core\Graphic\Object\List</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>99.Default\소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

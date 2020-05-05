@@ -35,8 +35,6 @@ void Camera::Render()
 
 	XMFLOAT3 up, pos, lookAt;
 	XMVECTOR vUp, vPos, vLookAt;
-	float yaw, pitch, roll;
-	XMMATRIX rotationMatrix;
 
 	up.x = 0.f;
 	up.y = 1.f;
@@ -47,24 +45,13 @@ void Camera::Render()
 	pos = m_pos;
 	vPos = XMLoadFloat3(&pos);
 
-	lookAt.x = 0.f;
-	lookAt.y = 0.f;
-	lookAt.z = 1.f;
+	float radians = m_rot.y * 0.0174532925f;
+
+	lookAt.x = sinf(radians) + m_pos.x;
+	lookAt.y = m_pos.y;
+	lookAt.z = cosf(radians) + m_pos.z;
 
 	vLookAt = XMLoadFloat3(&lookAt);
-
-	pitch = XMConvertToRadians(m_rot.x);
-	yaw = XMConvertToRadians(m_rot.y);
-	roll = XMConvertToRadians(m_rot.z);
-
-	// yaw pitch roll을 이용하여 회전행렬을 구함
-	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-
-	// look벡터, up벡터
-	vLookAt = XMVector3TransformCoord(vLookAt, rotationMatrix);
-	vUp = XMVector3TransformCoord(vUp, rotationMatrix);
-
-	//vLookAt = XMVectorAdd(vPos, vLookAt);
 
 	// 구한 벡터들을 사용하여 view 행렬 구함
 	m_view = XMMatrixLookAtLH(vPos, vLookAt, vUp);

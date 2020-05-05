@@ -4,8 +4,8 @@
 //#define TEXTURE_MODE
 //#define LIGHT_MODE
 //#define TWO_D_MODE
-#define TEXT_MODE
-
+//#define TEXT_MODE
+#define FRUSTUM_MODE
 
 class Direct3D;
 class Camera;
@@ -20,6 +20,8 @@ class Model3D;
 class Input;
 class ModelBitmap;
 class Text;
+class ModelList;
+class Frustum;
 class Graphic
 {
 public:
@@ -29,7 +31,7 @@ public:
 
 	bool Initialize(int width, int height, HWND hwnd);
 	void Shutdown();
-	bool Frame(int fps, int cpu, float timeDelta);
+	bool Frame(int fps, int cpu, float timeDelta, float rotationY);
 	bool Render();
 
 	// 임시 코드
@@ -67,6 +69,15 @@ private:
 
 #ifdef TEXT_MODE
 	Text* m_Text = nullptr;
+#endif
+
+#ifdef FRUSTUM_MODE
+	Text* m_Text = nullptr;
+	Model3D* m_Model = nullptr;
+	LightShader* m_LightShader = nullptr;
+	Light* m_Light = nullptr;
+	ModelList* m_ModelList = nullptr;
+	Frustum* m_Frustum = nullptr;
 #endif
 };
 

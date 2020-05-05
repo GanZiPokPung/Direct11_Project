@@ -70,6 +70,9 @@ bool Text::Render(ID3D11DeviceContext* deviceContext, XMMATRIX world, XMMATRIX o
 	if (!RenderSentence(deviceContext, m_Sentence2, world, ortho))
 		return false;
 
+	if (!RenderSentence(deviceContext, m_Sentence3, world, ortho))
+		return false;
+
 	return true;
 }
 
@@ -150,6 +153,19 @@ bool Text::SetCpu(int cpu, ID3D11DeviceContext* deviceContext)
 	strcat_s(cpuString, "%");
 
 	return UpdateSentence(m_Sentence2, cpuString, 20, 40, 0.f, 1.f, 0.f, deviceContext);
+}
+
+bool Text::SetRenderCount(int count, ID3D11DeviceContext* deviceContext)
+{
+	char tempString[30] = { 0, };
+	_itoa_s(count, tempString, 10);
+
+	char countString[30] = { 0, };
+	strcpy_s(countString, "RenderCount: ");
+	strcat_s(countString, tempString);
+	strcat_s(countString, "");
+
+	return UpdateSentence(m_Sentence3, countString, 20, 60, 0.f, 1.f, 0.f, deviceContext);
 }
 
 bool Text::InitializeSentence(SentenceType** sentence, int maxLength, ID3D11Device* device)
